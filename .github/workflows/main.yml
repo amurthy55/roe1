@@ -1,0 +1,29 @@
+name: multi-platform-matrix-build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]   # 3 variants
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: matrix-5d955bb
+        run: echo "Building on ${{ matrix.os }}"
+
+      - name: Generate build artifact
+        run: |
+          echo "Build output for platform: ${{ matrix.os }}" > build_output_${{ matrix.os }}.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-5d955bb-${{ matrix.os }}
+          path: build_output_${{ matrix.os }}.txt
